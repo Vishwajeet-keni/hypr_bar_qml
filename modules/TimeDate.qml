@@ -1,41 +1,51 @@
-import Quickshell.Io
 import QtQuick
+import QtQuick.Layouts
+import Quickshell
+import "../config"
 
-// Replaces widgets/bar/time_date_cal.yuck. Uses `date` directly instead of
-// a defpoll script since the original command was a one-liner anyway.
-Item {
+Rectangle {
     id: root
-    property var pal
-    property var state
-    property string timeText: "--:-- --"
+    implicitWidth: timeRow.implicitWidth + 16
+    implicitHeight: 28
+    radius: 7
+    color: AppState.calendarOpen ? Qt.rgba(Colors.accentMauve.r, Colors.accentMauve.g, Colors.accentMauve.b, 0.25) : Colors.surfaceBg
+    border.color: AppState.calendarOpen ? Colors.accentMauve : Colors.borderSubtle
+    border.width: 1
 
-    implicitWidth: label.implicitWidth + 10
-    implicitHeight: label.implicitHeight
+    Behavior on color { ColorAnimation { duration: 150 } }
 
-    Process {
-        id: dateProc
-        command: ["date", "+%a %d-%b %H:%M"]
-        stdout: StdioCollector { onStreamFinished: root.timeText = this.text.trim() }
-    }
-    Component.onCompleted: dateProc.running = true
-    Timer { interval: 10000; running: true; repeat: true; onTriggered: dateProc.running = true }
-
-    Text {
-        id: label
+    RowLayout {
+        id: timeRow
         anchors.centerIn: parent
-        text: root.timeText
-        color: root.pal.textPrimary
-        font.pixelSize: 13
-        font.bold: true
+        spacing: 6
+
+        Text {
+            text: "󰥔"
+            color: Colors.accentMauve
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 13
+        }
+
+        Text {
+            id: clockText
+            color: Colors.textPrimary
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 11
+            font.bold: true
+            text: Qt.formatDateTime(new Date(), "ddd dd MMM  hh:mm A")
+        }
+    }
+
+    Timer {
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: clockText.text = Qt.formatDateTime(new Date(), "ddd dd MMM  hh:mm A")
     }
 
     MouseArea {
         anchors.fill: parent
-        hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
-        onClicked: root.state.calendarOpen = true
-        onExited: calCloseTimer.restart()
-        onEntered: calCloseTimer.stop()
+        onClicked: AppState.calendarOpen = !AppState.calendarOpen
     }
-    Timer { id: calCloseTimer; interval: 300; onTriggered: root.state.calendarOpen = false }
 }

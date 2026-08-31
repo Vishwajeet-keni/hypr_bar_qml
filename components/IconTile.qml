@@ -1,22 +1,35 @@
 import QtQuick
-import QtQuick.Layouts
+import "../config"
 
-// Replaces the cc-icon-tile reusable widget from tiles.yuck (used for the
-// Stage/Mirror placeholders, which have no direct Linux equivalent).
 Rectangle {
-    id: tile
-    property var pal
+    id: root
     property string icon: ""
-    property string title: ""
-    implicitWidth: 64
-    implicitHeight: 64
-    radius: 12
-    color: Qt.rgba(1, 1, 1, 0.06)
+    property color iconColor: Colors.textPrimary
+    property color bgColor: Colors.surfaceBg
+    signal clicked()
 
-    ColumnLayout {
+    implicitWidth: 34
+    implicitHeight: 34
+    radius: 8
+    color: mouseArea.containsMouse ? Colors.surfaceBgHover : root.bgColor
+    border.color: Colors.borderSubtle
+    border.width: 1
+
+    Behavior on color { ColorAnimation { duration: 120 } }
+
+    Text {
         anchors.centerIn: parent
-        spacing: 4
-        Text { text: tile.icon; color: tile.pal.textPrimary; font.pixelSize: 18; Layout.alignment: Qt.AlignHCenter }
-        Text { text: tile.title; color: tile.pal.textPrimary; font.pixelSize: 9; Layout.alignment: Qt.AlignHCenter }
+        text: root.icon
+        color: root.iconColor
+        font.family: "JetBrains Mono Nerd Font"
+        font.pixelSize: 14
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: root.clicked()
     }
 }

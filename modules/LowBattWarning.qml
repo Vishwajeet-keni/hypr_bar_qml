@@ -1,71 +1,71 @@
-import Quickshell
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
+import Quickshell.Wayland
+import "../config"
+import "../services"
 
-// Replaces the `low_batt_warning` eww window/widget. A standalone floating
-// dialog (not anchored to the bar), matching the original's
-// `:windowtype "dialog"` + centered geometry.
-//
-// Hyprland note: since this spawns as a normal floating toplevel, you may
-// want a window rule to keep it centered, e.g. in hyprland.conf:
-//   windowrulev2 = float, title:^(Low Battery Warning)$
-//   windowrulev2 = center, title:^(Low Battery Warning)$
-FloatingWindow {
-    id: popup
-    property var pal
-    property var state
+PanelWindow {
+    id: battWarn
 
-    title: "Low Battery Warning"
-    visible: state.lowBattVisible
-    implicitWidth: 240
-    implicitHeight: 130
+    WlrLayershell.layer: WlrLayer.Overlay
+    WlrLayershell.namespace: "hyprbar-batt"
+
+    JsonPoller {
+        id: battPoller
+        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/battery.sh")
+        interval: 10000
+    }
+
+    readonly property bool isLow: battPoller.data && battPoller.data.capacity <= 15 && !battPoller.data.charging
+
+    visible: isLow
+
+    anchors {
+        top: true
+    }
+    margins {
+        top: 48
+    }
+
+    width: 320
+    height: 54
     color: "transparent"
 
     Rectangle {
         anchors.fill: parent
-        radius: 6
-        color: Qt.rgba(0, 0, 0, 0.85)
+        radius: 12
+        color: Qt.rgba(Colors.accentRed.r, Colors.accentRed.g, Colors.accentRed.b, 0.95)
+        border.color: Colors.textPrimary
         border.width: 1
-        border.color: Qt.rgba(1, 1, 1, 1)
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
+        RowLayout {
+            anchors.centerIn: parent
+            spacing: 12
 
             Text {
-                text: "Battery is low!"
-                color: "whitesmoke"
-                font.pixelSize: 15
-                font.bold: true
-                Layout.alignment: Qt.AlignHCenter
+                text: "󰂃"
+                color: "#ffffff"
+                font.family: "JetBrains Mono Nerd Font"
+                font.pixelSize: 24
             }
-            Text {
-                text: "Please connect to charger"
-                color: "#aaaaaa"
-                font.pixelSize: 12
-                Layout.alignment: Qt.AlignHCenter
-            }
-            Rectangle {
-                Layout.alignment: Qt.AlignHCenter
-                implicitWidth: okLabel.implicitWidth + 32
-                implicitHeight: okLabel.implicitHeight + 8
-                radius: 4
-                color: okMa.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
-                border.width: 1
-                border.color: "whitesmoke"
+
+            ColumnLayout {
+                spacing: 1
+
                 Text {
-                    id: okLabel
-                    anchors.centerIn: parent
-                    text: "OK"
-                    color: "whitesmoke"
+                    text: "Low Battery Warning"
+                    color: "#ffffff"
+                    font.family: "JetBrains Mono Nerd Font"
+                    font.bold: true
+                    font.pixelSize: 12
                 }
-                MouseArea {
-                    id: okMa
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: popup.state.lowBattVisible = false
+
+                Text {
+                    text: "Battery is at " + (battPoller.data ? battPoller.data.capacity : 0) + "% — Connect charger!"
+                    color: "#f5c2e7"
+                    font.family: "JetBrains Mono Nerd Font"
+                    font.pixelSize: 10
                 }
             }
         }

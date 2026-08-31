@@ -1,35 +1,66 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
+import "../config"
+import "../components"
+import "../services"
 
 RowLayout {
     id: root
-    property var pal
-    spacing: 8
+    spacing: 6
 
     JsonPoller {
-        id: poller
-        script: "$HOME/.config/quickshell/scripts/system_stats.sh"
+        id: statsPoller
+        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/system_stats.sh")
         interval: 2000
     }
 
-    readonly property var d: poller.data
+    JsonPoller {
+        id: updatesPoller
+        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/updates.sh")
+        interval: 300000
+    }
 
-    StatItem {
-        pal: root.pal
-        icon: root.d.cpu_icon || ""
-        label: root.d.cpu_usage !== undefined ? root.d.cpu_usage + "%" : "--"
-        state: root.d.cpu_state || ""
+    JsonPoller {
+        id: battPoller
+        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/battery.sh")
+        interval: 5000
     }
+
+    // Arch Updates
     StatItem {
-        pal: root.pal
-        icon: root.d.memory_icon || ""
-        label: root.d.memory_usage !== undefined ? root.d.memory_usage + "%" : "--"
-        state: root.d.memory_state || ""
+        visible: updatesPoller.data && updatesPoller.data.updates > 0
+        icon: "󰏔"
+        label: updatesPoller.data ? updatesPoller.data.updates : "0"
+        highlightColor: Colors.accentPeach
     }
+
+    // CPU Stat
     StatItem {
-        pal: root.pal
-        icon: root.d.temp_icon || ""
-        label: root.d.temp_lvl !== undefined ? root.d.temp_lvl + "\u00b0C" : "--"
-        state: root.d.temp_state || ""
+        icon: ""
+        label: (statsPoller.data && statsPoller.data.cpu !== undefined) ? statsPoller.data.cpu + "%" : "--%"
+        highlightColor: Colors.accentTeal
+    }
+
+    // RAM Stat
+    StatItem {
+        icon: ""
+        label: (statsPoller.data && statsPoller.data.ram !== undefined) ? statsPoller.data.ram + "%" : "--%"
+        highlightColor: Colors.accentGreen
+    }
+
+    // Temp Stat
+    StatItem {
+        icon: ""
+        label: (statsPoller.data && statsPoller.data.temp !== undefined) ? statsPoller.data.temp + "°C" : "--°C"
+        highlightColor: Colors.accentPeach
+    }
+
+    // Battery Bar Stat
+    StatItem {
+        icon: battPoller.data && battPoller.data.charging ? "󰂄" : (battPoller.data && battPoller.data.capacity > 20 ? "󰁹" : "󰂃")
+        label: (battPoller.data && battPoller.data.capacity !== undefined) ? battPoller.data.capacity + "%" : "--%"
+        highlightColor: battPoller.data && battPoller.data.capacity <= 20 && !battPoller.data.charging ? Colors.accentRed : Colors.accentLavender
+        alert: battPoller.data && battPoller.data.capacity <= 15 && !battPoller.data.charging
     }
 }
