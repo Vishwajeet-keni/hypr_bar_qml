@@ -4,23 +4,30 @@ import "../config"
 
 // Replaces widgets/bar/time_date_cal.yuck. Flat, no box - lives on the
 // right side of the bar after MenuBar, not centered.
-RowLayout {
+Item {
     id: root
-    spacing: 6
+    implicitWidth: row.implicitWidth
+    implicitHeight: row.implicitHeight
 
-    Text {
-        text: "\u{f0f56}"
-        color: AppState.calendarOpen ? Colors.accentMauve : Colors.textSecondary
-        font.family: "JetBrains Mono Nerd Font"
-        font.pixelSize: 12
-    }
-    Text {
-        id: clockText
-        color: AppState.calendarOpen ? Colors.accentMauve : Colors.textPrimary
-        font.family: "JetBrains Mono Nerd Font"
-        font.pixelSize: 12
-        font.bold: true
-        text: Qt.formatDateTime(new Date(), "ddd dd-MMM hh:mm")
+    RowLayout {
+        id: row
+        anchors.fill: parent
+        spacing: 6
+
+        Text {
+            text: "\u{f0f56}"
+            color: AppState.calendarOpen ? Colors.accentMauve : Colors.textSecondary
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 12
+        }
+        Text {
+            id: clockText
+            color: AppState.calendarOpen ? Colors.accentMauve : Colors.textPrimary
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 12
+            font.bold: true
+            text: Qt.formatDateTime(new Date(), "ddd dd-MMM hh:mm")
+        }
     }
 
     Timer {

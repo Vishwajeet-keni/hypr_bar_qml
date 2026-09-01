@@ -27,6 +27,13 @@ QtObject {
     readonly property color accentTeal: "#94e2d5"
     readonly property color accentLavender: "#b4befe"
 
+    // The bar itself (.base_div in the original scss) is flat/opaque:
+    // rgba(black, 0.5) background + solid whitesmoke border. This is
+    // deliberately different from bgGlass/borderColor above, which are
+    // for the Control Center / Calendar's "liquid glass" look.
+    readonly property color barBg: Qt.rgba(0, 0, 0, 0.5)
+    readonly property color barBorder: "whitesmoke"
+
     // Maps the cpu_state/memory_state/temp_state/class strings emitted by
     // the shell scripts to a color.
     function stateColor(state) {

@@ -27,8 +27,8 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         radius: 5
-        color: Colors.bgGlass
-        border.color: Colors.borderColor
+        color: Colors.barBg
+        border.color: Colors.barBorder
         border.width: 1
 
         RowLayout {
@@ -51,7 +51,7 @@ PanelWindow {
             // ── Right: system stats, menu, clock ──
             RowLayout {
                 Layout.alignment: Qt.AlignVCenter
-                spacing: 12
+                spacing: 8
                 SystemStats {}
                 MenuBar {}
                 TimeDate {}

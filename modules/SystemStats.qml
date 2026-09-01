@@ -8,7 +8,7 @@ import "../services"
 // battery live in MenuBar.qml, matching the original menu.yuck split).
 RowLayout {
     id: root
-    spacing: 10
+    spacing: 8
 
     JsonPoller {
         id: statsPoller
@@ -19,7 +19,7 @@ RowLayout {
 
     StatItem {
         icon: root.d.cpu_icon || ""
-        label: root.d.cpu_usage !== undefined ? root.d.cpu_usage + "%" : "--%"
+        label: root.d.cpu_usage !== undefined ? String(root.d.cpu_usage) : "--"
         highlightColor: Colors.stateColor(root.d.cpu_state)
     }
     StatItem {

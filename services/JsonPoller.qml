@@ -14,9 +14,9 @@ Item {
 
     Process {
         id: proc
-        stdout: SplitParser {
-            onRead: raw => {
-                const text = raw.trim()
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const text = this.text.trim()
                 if (!text)
                     return
                 try {

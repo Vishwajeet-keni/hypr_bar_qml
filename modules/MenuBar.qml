@@ -9,7 +9,7 @@ import "../services"
 // bar's shared-background look, unlike the boxed Control Center tiles.
 RowLayout {
     id: root
-    spacing: 10
+    spacing: 8
 
     JsonPoller {
         id: updatesPoller
@@ -35,16 +35,23 @@ RowLayout {
     }
 
     // ── Updates ──
-    RowLayout {
-        spacing: 5
+    Item {
+        implicitWidth: updRow.implicitWidth
+        implicitHeight: updRow.implicitHeight
         visible: (updatesPoller.data.count || "0") !== "0"
-        Text { text: "\uf021"; color: Colors.textSecondary; font.family: "JetBrains Mono Nerd Font"; font.pixelSize: 12 }
-        Text {
-            text: updatesPoller.data.count !== undefined ? updatesPoller.data.count : "?"
-            color: Colors.textSecondary
-            font.family: "JetBrains Mono Nerd Font"
-            font.pixelSize: 12
-            font.bold: true
+
+        RowLayout {
+            id: updRow
+            anchors.fill: parent
+            spacing: 5
+            Text { text: "\uf021"; color: Colors.textSecondary; font.family: "JetBrains Mono Nerd Font"; font.pixelSize: 12 }
+            Text {
+                text: updatesPoller.data.count !== undefined ? updatesPoller.data.count : "?"
+                color: Colors.textSecondary
+                font.family: "JetBrains Mono Nerd Font"
+                font.pixelSize: 12
+                font.bold: true
+            }
         }
         MouseArea { id: maUpd; anchors.fill: parent; hoverEnabled: true }
         ToolTip.visible: maUpd.containsMouse
@@ -97,7 +104,7 @@ RowLayout {
         implicitHeight: menuLabel.implicitHeight
         Text {
             id: menuLabel
-            text: "\u{f01d9}"
+            text: "\u{f07e1}"
             color: AppState.controlCenterOpen ? Colors.accentBlue : Colors.textPrimary
             font.family: "JetBrains Mono Nerd Font"
             font.pixelSize: 15
