@@ -1,38 +1,112 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
-import Quickshell.Hyprland
+import QtQuick.Controls
 import "../config"
+import "../services"
 
+// Replaces widgets/bar/menu.yuck (updates + wifi + battery + the button
+// that opens the control panel). Flat, no per-item boxes - matches the
+// bar's shared-background look, unlike the boxed Control Center tiles.
 RowLayout {
     id: root
-    spacing: 8
+    spacing: 10
 
-    Rectangle {
-        width: 28
-        height: 28
-        radius: 7
-        color: Colors.surfaceBg
-        border.color: Colors.borderSubtle
-        border.width: 1
+    JsonPoller {
+        id: updatesPoller
+        scriptPath: Paths.script("updates.sh")
+        interval: 300000
+    }
+    JsonPoller {
+        id: wifiPoller
+        scriptPath: Paths.script("wifi.sh")
+        interval: 5000
+    }
+    JsonPoller {
+        id: battPoller
+        scriptPath: Paths.script("battery.sh")
+        interval: 5000
+    }
 
+    readonly property color battColor: {
+        const cls = battPoller.data.class
+        if (cls === "critical") return Colors.accentRed
+        if (cls === "Charging") return Colors.accentGreen
+        return Colors.textPrimary
+    }
+
+    // ── Updates ──
+    RowLayout {
+        spacing: 5
+        visible: (updatesPoller.data.count || "0") !== "0"
+        Text { text: "\uf021"; color: Colors.textSecondary; font.family: "JetBrains Mono Nerd Font"; font.pixelSize: 12 }
         Text {
-            anchors.centerIn: parent
-            text: "󰣇"
-            color: Colors.accentBlue
+            text: updatesPoller.data.count !== undefined ? updatesPoller.data.count : "?"
+            color: Colors.textSecondary
             font.family: "JetBrains Mono Nerd Font"
-            font.pixelSize: 15
+            font.pixelSize: 12
+            font.bold: true
+        }
+        MouseArea { id: maUpd; anchors.fill: parent; hoverEnabled: true }
+        ToolTip.visible: maUpd.containsMouse
+        ToolTip.text: "pacman: " + (updatesPoller.data.pacman_u ?? "?") + "\nyay: " + (updatesPoller.data.yay_u ?? "?")
+    }
+
+    // ── Wifi ──
+    Item {
+        implicitWidth: wifiLabel.implicitWidth
+        implicitHeight: wifiLabel.implicitHeight
+        Text {
+            id: wifiLabel
+            text: wifiPoller.data.icon || "\u{f05aa}"
+            color: Colors.textPrimary
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 14
+        }
+        MouseArea {
+            id: maWifi
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: wifiPoller.poll(["toggle"])
+        }
+        ToolTip.visible: maWifi.containsMouse
+        ToolTip.text: wifiPoller.data.status || ""
+    }
+
+    // ── Battery ──
+    RowLayout {
+        spacing: 5
+        Text {
+            text: battPoller.data.icon || ""
+            color: root.battColor
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 13
+        }
+        Text {
+            text: (battPoller.data.level || "--") + "%"
+            color: root.battColor
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 12
+            font.bold: true
         }
     }
 
-    Text {
-        text: Hyprland.activeWindow ? (Hyprland.activeWindow.title || "") : ""
-        color: Colors.textSecondary
-        font.family: "JetBrains Mono Nerd Font"
-        font.pixelSize: 11
-        font.bold: true
-        elide: Text.ElideRight
-        Layout.maximumWidth: 260
-        visible: text.length > 0
+    // ── Control panel toggle ──
+    Item {
+        implicitWidth: menuLabel.implicitWidth + 2
+        implicitHeight: menuLabel.implicitHeight
+        Text {
+            id: menuLabel
+            text: "\u{f01d9}"
+            color: AppState.controlCenterOpen ? Colors.accentBlue : Colors.textPrimary
+            font.family: "JetBrains Mono Nerd Font"
+            font.pixelSize: 15
+        }
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            cursorShape: Qt.PointingHandCursor
+            onClicked: AppState.controlCenterOpen = !AppState.controlCenterOpen
+        }
     }
 }

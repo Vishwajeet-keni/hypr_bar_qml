@@ -1,71 +1,93 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Wayland
 import "../config"
 import "../services"
 
-PanelWindow {
-    id: battWarn
+// Replaces the `low_batt_warning` eww window - a standalone floating
+// dialog (not anchored to the bar), matching the original's
+// `:windowtype "dialog"` + centered geometry.
+//
+// Hyprland note: since this spawns as a normal floating toplevel, you may
+// want a window rule to keep it centered, e.g. in hyprland.conf:
+//   windowrulev2 = float, title:^(Low Battery Warning)$
+//   windowrulev2 = center, title:^(Low Battery Warning)$
+FloatingWindow {
+    id: popup
 
-    WlrLayershell.layer: WlrLayer.Overlay
-    WlrLayershell.namespace: "hyprbar-batt"
+    title: "Low Battery Warning"
+    implicitWidth: 260
+    implicitHeight: 130
+    color: "transparent"
 
     JsonPoller {
         id: battPoller
-        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/battery.sh")
-        interval: 10000
+        scriptPath: Paths.script("battery.sh")
+        interval: 15000
     }
 
-    readonly property bool isLow: battPoller.data && battPoller.data.capacity <= 15 && !battPoller.data.charging
+    readonly property int level: parseInt(battPoller.data.level, 10)
+    readonly property bool critical: battPoller.data.status === "Discharging"
+        && !isNaN(level) && level <= 30
 
-    visible: isLow
+    // Reset the dismiss-flag once we're no longer critical, so the next
+    // low-battery episode pops the dialog again.
+    onCriticalChanged: if (!critical) AppState.lowBattDismissed = false
 
-    anchors {
-        top: true
-    }
-    margins {
-        top: 48
-    }
-
-    width: 320
-    height: 54
-    color: "transparent"
+    visible: critical && !AppState.lowBattDismissed
 
     Rectangle {
         anchors.fill: parent
-        radius: 12
+        radius: 10
         color: Qt.rgba(Colors.accentRed.r, Colors.accentRed.g, Colors.accentRed.b, 0.95)
         border.color: Colors.textPrimary
         border.width: 1
 
-        RowLayout {
-            anchors.centerIn: parent
-            spacing: 12
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 16
+            spacing: 8
 
-            Text {
-                text: "󰂃"
-                color: "#ffffff"
-                font.family: "JetBrains Mono Nerd Font"
-                font.pixelSize: 24
-            }
-
-            ColumnLayout {
-                spacing: 1
-
+            RowLayout {
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 10
+                Text { text: "\u{f008e}"; color: "#ffffff"; font.family: "JetBrains Mono Nerd Font"; font.pixelSize: 22 }
                 Text {
-                    text: "Low Battery Warning"
+                    text: "Battery is low!"
                     color: "#ffffff"
                     font.family: "JetBrains Mono Nerd Font"
                     font.bold: true
-                    font.pixelSize: 12
+                    font.pixelSize: 15
                 }
-
+            }
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                text: "Please connect to charger (" + (isNaN(popup.level) ? "?" : popup.level) + "%)"
+                color: "#f5c2e7"
+                font.family: "JetBrains Mono Nerd Font"
+                font.pixelSize: 11
+            }
+            Rectangle {
+                Layout.alignment: Qt.AlignHCenter
+                implicitWidth: okLabel.implicitWidth + 28
+                implicitHeight: okLabel.implicitHeight + 8
+                radius: 4
+                color: okMa.containsMouse ? Qt.rgba(1, 1, 1, 0.15) : Qt.rgba(1, 1, 1, 0.05)
+                border.width: 1
+                border.color: "#ffffff"
                 Text {
-                    text: "Battery is at " + (battPoller.data ? battPoller.data.capacity : 0) + "% — Connect charger!"
-                    color: "#f5c2e7"
+                    id: okLabel
+                    anchors.centerIn: parent
+                    text: "OK"
+                    color: "#ffffff"
                     font.family: "JetBrains Mono Nerd Font"
-                    font.pixelSize: 10
+                }
+                MouseArea {
+                    id: okMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: AppState.lowBattDismissed = true
                 }
             }
         }

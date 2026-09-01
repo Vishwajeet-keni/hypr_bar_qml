@@ -26,4 +26,29 @@ QtObject {
     readonly property color accentRed: "#f38ba8"
     readonly property color accentTeal: "#94e2d5"
     readonly property color accentLavender: "#b4befe"
+
+    // Maps the cpu_state/memory_state/temp_state/class strings emitted by
+    // the shell scripts to a color.
+    function stateColor(state) {
+        switch (state) {
+        case "cpu-idle": return "#74c7ec"
+        case "cpu-low": return accentBlue
+        case "cpu-moderate": return "#89dceb"
+        case "cpu-high": return "#74c7ec"
+        case "cpu-critical": return accentRed
+        case "mem-normal": return accentMauve
+        case "mem-moderate": return accentLavender
+        case "mem-high": return accentMauve
+        case "mem-critical": return "#f5c2e7"
+        case "temp-cool": return "#89dceb"
+        case "temp-normal": return accentGreen
+        case "temp-warm": return accentYellow
+        case "temp-hot": return accentPeach
+        case "temp-crit": return accentRed
+        case "Charging": return accentGreen
+        case "Discharging": return textPrimary
+        case "critical": return accentRed
+        default: return textPrimary
+        }
+    }
 }

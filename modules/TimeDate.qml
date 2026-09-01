@@ -1,50 +1,38 @@
 import QtQuick
 import QtQuick.Layouts
-import Quickshell
 import "../config"
 
-Rectangle {
+// Replaces widgets/bar/time_date_cal.yuck. Flat, no box - lives on the
+// right side of the bar after MenuBar, not centered.
+RowLayout {
     id: root
-    implicitWidth: timeRow.implicitWidth + 16
-    implicitHeight: 28
-    radius: 7
-    color: AppState.calendarOpen ? Qt.rgba(Colors.accentMauve.r, Colors.accentMauve.g, Colors.accentMauve.b, 0.25) : Colors.surfaceBg
-    border.color: AppState.calendarOpen ? Colors.accentMauve : Colors.borderSubtle
-    border.width: 1
+    spacing: 6
 
-    Behavior on color { ColorAnimation { duration: 150 } }
-
-    RowLayout {
-        id: timeRow
-        anchors.centerIn: parent
-        spacing: 6
-
-        Text {
-            text: "󰥔"
-            color: Colors.accentMauve
-            font.family: "JetBrains Mono Nerd Font"
-            font.pixelSize: 13
-        }
-
-        Text {
-            id: clockText
-            color: Colors.textPrimary
-            font.family: "JetBrains Mono Nerd Font"
-            font.pixelSize: 11
-            font.bold: true
-            text: Qt.formatDateTime(new Date(), "ddd dd MMM  hh:mm A")
-        }
+    Text {
+        text: "\u{f0f56}"
+        color: AppState.calendarOpen ? Colors.accentMauve : Colors.textSecondary
+        font.family: "JetBrains Mono Nerd Font"
+        font.pixelSize: 12
+    }
+    Text {
+        id: clockText
+        color: AppState.calendarOpen ? Colors.accentMauve : Colors.textPrimary
+        font.family: "JetBrains Mono Nerd Font"
+        font.pixelSize: 12
+        font.bold: true
+        text: Qt.formatDateTime(new Date(), "ddd dd-MMM hh:mm")
     }
 
     Timer {
-        interval: 1000
+        interval: 10000
         running: true
         repeat: true
-        onTriggered: clockText.text = Qt.formatDateTime(new Date(), "ddd dd MMM  hh:mm A")
+        onTriggered: clockText.text = Qt.formatDateTime(new Date(), "ddd dd-MMM hh:mm")
     }
 
     MouseArea {
         anchors.fill: parent
+        hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: AppState.calendarOpen = !AppState.calendarOpen
     }

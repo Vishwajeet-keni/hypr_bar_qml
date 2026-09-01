@@ -7,6 +7,9 @@ import "../config"
 import "../components"
 import "../services"
 
+// Replaces widgets/control_center/control_center.yuck. This is the one
+// part of the original design that *is* boxed/tiled (macOS Control Center
+// style) - unlike the flat bar, that's intentional here.
 PanelWindow {
     id: ccWindow
 
@@ -15,34 +18,23 @@ PanelWindow {
 
     visible: AppState.controlCenterOpen
 
-    anchors {
-        top: true
-        right: true
-    }
-    margins {
-        top: 42
-        right: 12
-    }
+    anchors { top: true; right: true }
+    margins { top: 34; right: 8 }
 
-    width: 340
-    height: 380
+    implicitWidth: 320
+    implicitHeight: content.implicitHeight + 32
     color: "transparent"
 
     Process { id: actionExec }
 
-    JsonPoller {
-        id: volPoller
-        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/volume.sh")
-        interval: 1000
-    }
-
-    JsonPoller {
-        id: brightPoller
-        scriptPath: Quickshell.shellPath("hypr_bar_qml/scripts/brightness.sh")
-        interval: 2000
-    }
+    JsonPoller { id: wifiPoller; scriptPath: Paths.script("wifi.sh"); interval: 5000 }
+    JsonPoller { id: btPoller; scriptPath: Paths.script("bluetooth.sh"); interval: 2000 }
+    JsonPoller { id: pmPoller; scriptPath: Paths.script("power_mode.sh"); interval: 2000 }
+    JsonPoller { id: volPoller; scriptPath: Paths.script("volume.sh"); interval: 2000 }
+    JsonPoller { id: brightPoller; scriptPath: Paths.script("brightness.sh"); interval: 2000 }
 
     Rectangle {
+        id: content
         anchors.fill: parent
         radius: 14
         color: Colors.bgGlass
@@ -54,111 +46,76 @@ PanelWindow {
             anchors.margins: 16
             spacing: 12
 
-            // Header Section
             RowLayout {
                 Layout.fillWidth: true
+                spacing: 10
 
-                Text {
-                    text: "Quick Controls"
-                    color: Colors.textPrimary
-                    font.family: "JetBrains Mono Nerd Font"
-                    font.bold: true
-                    font.pixelSize: 14
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    spacing: 8
+                    ToggleTile {
+                        Layout.fillWidth: true
+                        label: "Wi-Fi"
+                        icon: wifiPoller.data.icon || "\u{f05aa}"
+                        sublabel: wifiPoller.data.status || ""
+                        active: wifiPoller.data.state === "on"
+                        activeColor: Colors.accentBlue
+                        onClicked: wifiPoller.poll(["toggle"])
+                    }
+                    ToggleTile {
+                        Layout.fillWidth: true
+                        label: "Bluetooth"
+                        icon: btPoller.data.icon || "\uf294"
+                        sublabel: btPoller.data.status || ""
+                        active: btPoller.data.state === "on"
+                        activeColor: Colors.accentMauve
+                        onClicked: btPoller.poll(["toggle"])
+                    }
+                    ToggleTile {
+                        Layout.fillWidth: true
+                        label: "Power Mode"
+                        icon: pmPoller.data.icon || "\uf863"
+                        sublabel: pmPoller.data.mode || ""
+                        active: pmPoller.data.mode === "performance"
+                        activeColor: Colors.accentPeach
+                        onClicked: pmPoller.poll(["toggle"])
+                    }
                 }
 
-                Item { Layout.fillWidth: true }
-
-                IconTile {
-                    icon: "󰐥"
-                    iconColor: Colors.accentRed
-                    onClicked: {
-                        actionExec.command = ["wlogout"]
-                        actionExec.running = true
-                    }
+                // Placeholders - Stage Manager / Screen Mirroring have no
+                // direct Linux equivalent, matching the original.
+                ColumnLayout {
+                    spacing: 8
+                    IconTile { icon: "\uf2d2" }
+                    IconTile { icon: "\uf26c" }
                 }
             }
 
-            // Quick Toggles Grid
-            GridLayout {
-                columns: 2
-                Layout.fillWidth: true
-                columnSpacing: 8
-                rowSpacing: 8
-
-                ToggleTile {
-                    label: "Wi-Fi"
-                    icon: "󰖩"
-                    active: AppState.wifiEnabled
-                    activeColor: Colors.accentBlue
-                    Layout.fillWidth: true
-                    onClicked: {
-                        AppState.wifiEnabled = !AppState.wifiEnabled
-                        actionExec.command = ["sh", Quickshell.shellPath("hypr_bar_qml/scripts/wifi.sh"), "toggle"]
-                        actionExec.running = true
-                    }
-                }
-
-                ToggleTile {
-                    label: "Bluetooth"
-                    icon: "󰂯"
-                    active: AppState.bluetoothEnabled
-                    activeColor: Colors.accentMauve
-                    Layout.fillWidth: true
-                    onClicked: {
-                        AppState.bluetoothEnabled = !AppState.bluetoothEnabled
-                        actionExec.command = ["sh", Quickshell.shellPath("hypr_bar_qml/scripts/bluetooth.sh"), "toggle"]
-                        actionExec.running = true
-                    }
-                }
-
-                ToggleTile {
-                    label: "Night Light"
-                    icon: "󱩌"
-                    active: AppState.nightLightEnabled
-                    activeColor: Colors.accentPeach
-                    Layout.fillWidth: true
-                    onClicked: AppState.nightLightEnabled = !AppState.nightLightEnabled
-                }
-
-                ToggleTile {
-                    label: "Do Not Disturb"
-                    icon: "󰂛"
-                    active: AppState.dndEnabled
-                    activeColor: Colors.accentRed
-                    Layout.fillWidth: true
-                    onClicked: AppState.dndEnabled = !AppState.dndEnabled
-                }
-            }
-
-            // Sliders Section
             ColumnLayout {
                 Layout.fillWidth: true
                 spacing: 6
 
                 GlassSlider {
                     Layout.fillWidth: true
-                    icon: "󰕾"
-                    accentColor: Colors.accentBlue
-                    value: (volPoller.data && volPoller.data.volume !== undefined) ? volPoller.data.volume : 50
+                    icon: "\u{f00db}"
+                    accentColor: Colors.accentYellow
+                    value: brightPoller.data.value !== undefined ? brightPoller.data.value : 50
                     onSliderMoved: val => {
-                        actionExec.command = ["sh", Quickshell.shellPath("hypr_bar_qml/scripts/volume.sh"), "--set", Math.round(val)]
+                        actionExec.command = [Paths.script("brightness.sh"), "set", String(Math.round(val))]
                         actionExec.running = true
                     }
                 }
-
                 GlassSlider {
                     Layout.fillWidth: true
-                    icon: "󰃠"
-                    accentColor: Colors.accentYellow
-                    value: (brightPoller.data && brightPoller.data.brightness !== undefined) ? brightPoller.data.brightness : 50
+                    icon: "\u{f057e}"
+                    accentColor: Colors.accentBlue
+                    value: volPoller.data.value !== undefined ? volPoller.data.value : 50
                     onSliderMoved: val => {
-                        actionExec.command = ["sh", Quickshell.shellPath("hypr_bar_qml/scripts/brightness.sh"), "--set", Math.round(val)]
+                        actionExec.command = [Paths.script("volume.sh"), "set", String(Math.round(val))]
                         actionExec.running = true
                     }
                 }
             }
-
-            Item { Layout.fillHeight: true }
         }
     }
 }
