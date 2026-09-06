@@ -3,6 +3,9 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
+import "config"
+import "modules/bar"
+
 PanelWindow {
     id: bar
 
@@ -17,14 +20,14 @@ PanelWindow {
     }
 
     margins { top: 3; left: 8; right: 8 }
-    implicitHeight: 30
+    implicitHeight: Vars.barHeight
     color: "transparent"
 
     Rectangle {
         anchors.fill: parent
         radius: 5
-        color: Qt.rgba(0, 0, 0, 0.5)
-        border.color: "whitesmoke"
+        color: Vars.barBg
+        border.color: Vars.barBorder
         border.width: 1
 
         Item {                       // Main Container that alines its sub-containers row-wise
@@ -38,7 +41,8 @@ PanelWindow {
                 anchors.leftMargin: 8
                 spacing: 10
 
-                Text { text: "Left"; color: "cyan"; font.pixelSize: 14 }
+                // Text { text: "Left"; color: "cyan"; font.pixelSize: 14 }
+                ArchLogo {}
             }
 
             RowLayout {             // center sub-container
