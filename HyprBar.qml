@@ -26,8 +26,8 @@ PanelWindow {
     Rectangle {
         anchors.fill: parent
         radius: 5
-        color: Vars.barBg
-        border.color: Vars.barBorder
+        color: Colors.barBg
+        border.color: Colors.barBorder
         border.width: 1
 
         Item {                       // Main Container that alines its sub-containers row-wise
@@ -43,6 +43,7 @@ PanelWindow {
 
                 // Text { text: "Left"; color: "cyan"; font.pixelSize: 14 }
                 ArchLogo {}
+                Workspaces {}
             }
 
             RowLayout {             // center sub-container
