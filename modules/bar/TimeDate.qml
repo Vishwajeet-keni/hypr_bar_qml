@@ -7,8 +7,6 @@ Item {
     implicitWidth: label.implicitWidth
     implicitHeight: label.implicitHeight
 
-    // implicitWidth: Math.max(Vars.btnSize, label.implicitWidth)
-    // implicitHeight: Math.max(Vars.fontBase, label.implicitHeight)
     Text {
         id: label
         anchors.fill: parent
