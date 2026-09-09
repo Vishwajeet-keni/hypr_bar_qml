@@ -43,7 +43,7 @@ RowLayout {
             readonly property var ws: root.findWorkspace(modelData)
             readonly property bool active: !!ws && ws.focused
 
-            implicitWidth: Math.max(Vars.btnSize, label.implicitWidth + Vars.padWsBtn * 2)
+            implicitWidth: Math.max(Vars.btnSize - 3, label.implicitWidth + Vars.padWsBtn * 2)
             implicitHeight: Math.max(Vars.btnSize, label.implicitHeight + Vars.padWsBtn * 2)
 
             Text {

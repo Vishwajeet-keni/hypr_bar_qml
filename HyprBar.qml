@@ -39,7 +39,7 @@ PanelWindow {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.leftMargin: 8
-                spacing: 10
+                spacing: 8
 
                 // Text { text: "Left"; color: "cyan"; font.pixelSize: 14 }
                 ArchLogo {}
@@ -61,7 +61,9 @@ PanelWindow {
                 anchors.rightMargin: 8
                 spacing: 8
 
-                Text { text: "Right"; color: "cyan"; font.pixelSize: 14 }
+                // Text { text: "Right"; color: "cyan"; font.pixelSize: 14 }
+                TimeDate {}
+
             }
 
 
