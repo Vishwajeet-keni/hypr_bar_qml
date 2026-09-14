@@ -62,8 +62,8 @@ PanelWindow {
                 spacing: 8
 
                 // Text { text: "Right"; color: "cyan"; font.pixelSize: 14 }
+                Battery {}
                 TimeDate {}
-
             }
 
 
