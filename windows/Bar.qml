@@ -42,7 +42,7 @@ PanelWindow {
                 spacing: 8
 
                 // Text { text: "Left"; color: "cyan"; font.pixelSize: 14 }
-                ArchLogo {}
+                DistroLogo {}
                 Workspaces {}
             }
 
