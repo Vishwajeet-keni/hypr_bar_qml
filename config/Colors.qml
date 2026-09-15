@@ -7,14 +7,17 @@ QtObject {
     readonly property color archlinux_color: "#1793d1"
 
     // Theme
-    readonly property color barBg: Qt.rgba(0, 0, 0, 0.5)
-    readonly property color barBorder: "whitesmoke"
+    // readonly property color barBg: Qt.rgba(0, 0, 0, 0.5)
+    readonly property color barBg: Qt.rgba(0, 0, 0, 0)          // Alternative Look
+
+    // readonly property color barBorder: "whitesmoke"
+    readonly property color barBorder: Qt.rgba(0, 0, 0, 0)      // Alternative Look
 
     // ── Catppuccin Mocha palette ──
     readonly property color accentMauve: "#cba6f7"
     readonly property color accentBlue: "#1793d1"
     // readonly property color textPrimary: "#cdd6f4"
-    readonly property color textPrimary: "#F5F5F5"      // smoke white
+    readonly property color textPrimary: "whitesmoke"      // smoke white
     readonly property color textMuted: Qt.rgba(0.804, 0.839, 0.957, 0.55)
     readonly property color bgDark: "#11111b"
 }
