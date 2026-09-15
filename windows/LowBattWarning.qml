@@ -1,68 +1,85 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Wayland
 import "../config"
 
-FloatingWindow {
-    id: popup
-    title: "Low Battery Warning"
+PanelWindow {
+    id: anchorWin
+    anchors { top: true; left: true; right: true; bottom: true }
     visible: AppState.lowBattVisible
-    implicitWidth: 260
-    implicitHeight: 150
     color: "transparent"
+    exclusiveZone: 0
+    WlrLayershell.layer: WlrLayer.Overlay
 
-    Rectangle {
+    MouseArea {
         anchors.fill: parent
-        radius: 5
-        color: Qt.rgba(0, 0, 0, 0.85)
-        border.color: "whitesmoke"
-        border.width: 1
+        onClicked: AppState.lowBattVisible = false
+    }
 
-        ColumnLayout {
+    PopupWindow {
+        id: popup
+        anchor.window: anchorWin
+        anchor.rect.x: anchorWin.width / 2 - implicitWidth / 2
+        anchor.rect.y: anchorWin.height / 2 - implicitHeight / 2
+        implicitWidth: content.implicitWidth + 40
+        implicitHeight: content.implicitHeight + 40
+        visible: AppState.lowBattVisible
+        color: "transparent"
+
+        Rectangle {
             anchors.fill: parent
-            anchors.margins: 20
-            spacing: 12
+            radius: 5
+            color: Qt.rgba(0, 0, 0, 0.85)
+            border.color: "whitesmoke"
+            border.width: 1
 
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: "\uf244"
-                color: "red"
-                font.family: "JetBrains Mono Nerd Font"
-                font.pixelSize: 28
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: "Battery is low!"
-                color: "whitesmoke"
-                font.pixelSize: 15
-                font.bold: true
-            }
-            Text {
-                Layout.alignment: Qt.AlignHCenter
-                text: "Please connect to charger"
-                color: "#aaaaaa"
-                font.pixelSize: 12
-            }
-            Rectangle {
-                Layout.alignment: Qt.AlignHCenter
-                implicitWidth: okLabel.implicitWidth + 32
-                implicitHeight: okLabel.implicitHeight + 8
-                radius: 5
-                color: okMa.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
-                border.color: "whitesmoke"
-                border.width: 1
+            ColumnLayout {
+                id: content
+                anchors.centerIn: parent   // was anchors.fill + margins: 20
+                spacing: 12
+
                 Text {
-                    id: okLabel
-                    anchors.centerIn: parent
-                    text: "OK"
-                    color: "whitesmoke"
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "\uf243"
+                    color: "red"
+                    font.family: "JetBrains Mono Nerd Font"
+                    font.pixelSize: 28
                 }
-                MouseArea {
-                    id: okMa
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: AppState.lowBattVisible = false
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Battery is low!"
+                    color: "whitesmoke"
+                    font.pixelSize: 15
+                    font.bold: true
+                }
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Please connect to charger"
+                    color: "#aaaaaa"
+                    font.pixelSize: 12
+                }
+                Rectangle {
+                    Layout.alignment: Qt.AlignHCenter
+                    implicitWidth: okLabel.implicitWidth + 32
+                    implicitHeight: okLabel.implicitHeight + 8
+                    radius: 5
+                    color: okMa.containsMouse ? Qt.rgba(1, 1, 1, 0.1) : "transparent"
+                    border.color: "whitesmoke"
+                    border.width: 1
+                    Text {
+                        id: okLabel
+                        anchors.centerIn: parent
+                        text: "OK"
+                        color: "whitesmoke"
+                    }
+                    MouseArea {
+                        id: okMa
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: AppState.lowBattVisible = false
+                    }
                 }
             }
         }
