@@ -5,6 +5,7 @@ import QtQuick.Layouts
 
 import "../config"
 import "../modules/bar"
+import "../services"
 
 PanelWindow {
     id: bar
@@ -62,6 +63,7 @@ PanelWindow {
                 spacing: 8
 
                 // Text { text: "Right"; color: "cyan"; font.pixelSize: 14 }
+                SystemStats {}
                 Battery {}
                 TimeDate {}
             }
