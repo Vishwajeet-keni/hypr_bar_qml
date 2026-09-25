@@ -29,7 +29,7 @@ Item {
         command: "~/.config/quickshell/hypr_bar_qml/scripts/system_stats.sh"
         interval: 2000
         onDataChanged: {
-            // console.log("cpu_icon raw:", JSON.stringify(data.cpu_icon), "length:", data.cpu_icon.length, "code:", data.cpu_icon.length ? data.cpu_icon.charCodeAt(0) : "empty")
+            // console.log("temp_icon raw:", JSON.stringify(data.temp_icon), "length:", data.temp_icon.length, "code:", data.temp_icon.length ? data.temp_icon.charCodeAt(0) : "empty")
             root.cpuUsage = parseFloat(data.cpu_usage); root.cpuState = data.cpu_state
             root.memUsage = parseFloat(data.memory_usage); root.memState = data.memory_state
             root.tempLvl = parseFloat(data.temp_lvl); root.tempState = data.temp_state

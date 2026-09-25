@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# static icon
-cpu_icon=""
-memory_icon=""
-
 # Get CPU usage
 cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
 if [ -z "$cpu_usage" ]; then
@@ -39,14 +35,6 @@ memory_state=$(echo "$memory_usage" | awk '{
 
 # Gets cpu temp
 temp_lvl=$(sensors coretemp-isa-0000 | grep "Package id 0" | awk '{print $4}' | tr -d '+°C')
-temp_icon=$(echo "$temp_lvl" | awk '{
-  t = $1 + 0
-  if (t < 40)      print ""
-  else if (t < 50) print ""
-  else if (t < 60) print ""
-  else if (t < 70) print ""
-  else             print ""
-}')
 
 # Temp mapped to state 
 temp_state=$(echo "$temp_lvl" | awk '{
@@ -60,6 +48,6 @@ temp_state=$(echo "$temp_lvl" | awk '{
 
 
 # Output valid JSON (dont question the arrangement, it MCSS, m for manual, trust me on this it look good in terminal ;)
-echo "{ \"cpu_icon\"    :\"$cpu_icon\",     \"cpu_usage\"   :\"$cpu_usage\",    \"cpu_state\"   :\"$cpu_state\",
-  \"memory_icon\" :\"$memory_icon\",     \"memory_usage\":\"$memory_usage\",   \"memory_state\":\"$memory_state\",
-  \"temp_icon\"   :\"$temp_icon\",     \"temp_lvl\"    :\"$temp_lvl\",   \"temp_state\"  :\"$temp_state\"}"
+echo "{ \"cpu_usage\"   :\"$cpu_usage\",    \"cpu_state\"   :\"$cpu_state\",
+        \"memory_usage\":\"$memory_usage\",   \"memory_state\":\"$memory_state\",
+        \"temp_lvl\"    :\"$temp_lvl\",   \"temp_state\"  :\"$temp_state\"}"

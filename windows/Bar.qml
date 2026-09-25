@@ -12,7 +12,7 @@ PanelWindow {
 
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "hyprbar"
-    exclusiveZone: 30
+    exclusiveZone: Vars.barHeight
 
     anchors {
         top: true

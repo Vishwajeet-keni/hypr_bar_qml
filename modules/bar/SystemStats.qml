@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import "../../assets"
 import "../../config"
 import "../../services"
 
@@ -14,15 +15,15 @@ Item {
         spacing: 8
 
         RowLayout {
-            spacing: 8
+            spacing: 5
             Text {
-                text: SystemStatsService.cpuIcon
+                text: Icons.system_stats.cpu
                 color: Colors.stateColor(SystemStatsService.cpuState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
-                text: SystemStatsService.cpuUsage.toFixed(1)
+                text: SystemStatsService.cpuUsage + "%"
                 color: Colors.stateColor(SystemStatsService.cpuState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
@@ -31,15 +32,15 @@ Item {
         }
 
         RowLayout {
-            spacing: 8
+            spacing: 5
             Text {
-                text: SystemStatsService.memIcon
+                text: Icons.system_stats.mem
                 color: Colors.stateColor(SystemStatsService.memState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
-                text: SystemStatsService.memUsage.toFixed(1) + "%"
+                text: SystemStatsService.memUsage + "%"
                 color: Colors.stateColor(SystemStatsService.memState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
@@ -50,13 +51,13 @@ Item {
         RowLayout {
             spacing: 5
             Text {
-                text: SystemStatsService.tempIcon
+                text: Icons.system_stats.temp[SystemStatsService.tempState]
                 color: Colors.stateColor(SystemStatsService.tempState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
-                text: SystemStatsService.tempLvl.toFixed(1) + "\u00b0C"
+                text: SystemStatsService.tempLvl + "\u00b0C"
                 color: Colors.stateColor(SystemStatsService.tempState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase

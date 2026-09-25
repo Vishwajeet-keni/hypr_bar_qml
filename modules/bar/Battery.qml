@@ -1,7 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell.Services.UPower
+import "../../assets"
 import "../../config"
+
 
 RowLayout {
     id: root
@@ -11,18 +13,18 @@ RowLayout {
     readonly property bool ready: battery.ready && battery.isPresent
     readonly property int level: Math.round(battery.percentage * 100)
     readonly property bool charging: battery.state === UPowerDeviceState.Charging || battery.state === UPowerDeviceState.PendingCharge
-    readonly property bool critical: ready && level <= 55
+    readonly property bool critical: ready && level <= 30
     readonly property bool shouldWarn: critical && battery.state === UPowerDeviceState.Discharging
 
     visible: root.ready // no battery on this machine -> widget just isn't shown
 
     readonly property string icon: {
-        if (charging) return "\uf0e7"
-        if (level >= 90) return "\uf240"
-        if (level >= 60) return "\uf241"
-        if (level >= 40) return "\uf242"
-        if (level >= 10) return "\uf243"
-        return "\uf244"
+        if (charging) return Icons.battery.charging
+        if (level >= 90) return Icons.battery[4]
+        if (level >= 60) return Icons.battery[3]
+        if (level >= 40) return Icons.battery[2]
+        if (level >= 10) return Icons.battery[1]
+        return Icons.battery_icons[0]
     }
     readonly property color stateColor: {
         if (critical) return "red"
