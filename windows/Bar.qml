@@ -64,6 +64,7 @@ PanelWindow {
 
                 // Text { text: "Right"; color: "cyan"; font.pixelSize: 14 }
                 SystemStats {}
+                Updates {}
                 Battery {}
                 TimeDate {}
             }

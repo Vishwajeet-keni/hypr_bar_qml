@@ -11,5 +11,8 @@ QtObject{
                                                  "temp-normal":"\uf2ca",
                                                  "temp-warm"  :"\uf2c9",
                                                  "temp-hot"   :"\uf2c8",
-                                                 "temp-crit"  :"\uf2c7"}} 
+                                                 "temp-crit"  :"\uf2c7"}}
+                                
+    // Updates
+    readonly property string updates: "\uf021"
 }
