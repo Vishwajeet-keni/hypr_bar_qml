@@ -68,6 +68,4 @@ Item {
     }
 
     MouseArea { id: ma; anchors.fill: parent; hoverEnabled: true }
-    ToolTip.visible: ma.containsMouse
-    ToolTip.text: "pacman: " + root.pacmanCount + "\nyay: " + root.yayCount
 }
