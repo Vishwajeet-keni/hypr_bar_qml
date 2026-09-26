@@ -51,6 +51,7 @@ Item {
         id: row
         anchors.fill: parent
         spacing: 5
+        
         Text {
             text: Icons.updates
             color: Colors.textPrimary
