@@ -7,9 +7,10 @@ import "../../config"
 
 RowLayout {
     id: root
-    spacing: 5
+    spacing: 3
 
     readonly property var battery: UPower.displayDevice
+    readonly property var profile: PowerProfiles.profile
     readonly property bool ready: battery.ready && battery.isPresent
     readonly property int level: Math.round(battery.percentage * 100)
     readonly property bool charging: battery.state === UPowerDeviceState.Charging || battery.state === UPowerDeviceState.PendingCharge
@@ -18,17 +19,23 @@ RowLayout {
 
     visible: root.ready // no battery on this machine -> widget just isn't shown
 
+    readonly property string battery_lvl: {
+        if (level >= 90) return Icons.battery.lvl[4]
+        if (level >= 60) return Icons.battery.lvl[3]
+        if (level >= 40) return Icons.battery.lvl[2]
+        if (level >= 10) return Icons.battery.lvl[1]
+        return Icons.battery_icons.lvl[0]
+    }
     readonly property string icon: {
-        if (charging) return Icons.battery.charging
-        if (level >= 90) return Icons.battery[4]
-        if (level >= 60) return Icons.battery[3]
-        if (level >= 40) return Icons.battery[2]
-        if (level >= 10) return Icons.battery[1]
-        return Icons.battery_icons[0]
+        if (charging) return Icons.battery.charging + battery_lvl
+        if (profile != PowerProfile.Balanced) return Icons.battery[PowerProfile.toString(profile)] + battery_lvl
+        return battery_lvl
     }
     readonly property color stateColor: {
-        if (critical) return "red"
-        if (charging) return "green"
+        if (critical) return "#D9534F"                                  // muted brick red
+        if (charging) return "#7FB069"                                  // soft sage green
+        if (profile == PowerProfile.PowerSaver) return "#C4A855"        // muted gold
+        if (profile == PowerProfile.Performance) return "#C47848"       // muted terracotta
         return "whitesmoke"
     }
 

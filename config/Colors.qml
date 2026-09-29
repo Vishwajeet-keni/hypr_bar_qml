@@ -26,22 +26,22 @@ QtObject {
     function stateColor(state) {
         switch (state) {
             
-        case "cpu-idle": return "#74c7ec"
-        case "cpu-low": return "#89b4fa"
-        case "cpu-moderate": return "#89dceb"
-        case "cpu-high": return "#74c7ec"
-        case "cpu-critical": return "#f38ba8"
+        case "cpu-idle":        return "#74c7ec"
+        case "cpu-low":         return "#89b4fa"
+        case "cpu-moderate":    return "#89dceb"
+        case "cpu-high":        return "#74c7ec"
+        case "cpu-critical":    return "#f38ba8"
 
-        case "mem-normal": return "#cba6f7"
-        case "mem-moderate": return "#b4befe"
-        case "mem-high": return "#cba6f7"
-        case "mem-critical": return "#f5c2e7"
+        case "mem-normal":      return "#cba6f7"
+        case "mem-moderate":    return "#b4befe"
+        case "mem-high":        return "#cba6f7"
+        case "mem-critical":    return "#f5c2e7"
 
-        case "temp-cool": return "#89dceb"
-        case "temp-normal": return "#a6e3a1"
-        case "temp-warm": return "#f9e2af"
-        case "temp-hot": return "#fab387"
-        case "temp-crit": return "#f38ba8"
+        case "temp-cool":       return "#89dceb"
+        case "temp-normal":     return "#a6e3a1"
+        case "temp-warm":       return "#f9e2af"
+        case "temp-hot":        return "#fab387"
+        case "temp-crit":       return "#f38ba8"
 
         default: return textPrimary
         }
