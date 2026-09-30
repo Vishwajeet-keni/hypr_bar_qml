@@ -36,7 +36,7 @@ RowLayout {
     readonly property color profileColor: {
         if (critical) return Colors.battryProfileColor.Critical                 // muted brick red
         if (charging) return Colors.battryProfileColor.Charging                 // soft sage green
-        if (profile != PowerProfile.Balance) {
+        if (profile != PowerProfile.Balanced) {
             return Colors.battryProfileColor[PowerProfile.toString(profile)]    //  muted gold | muted terracotta
         }
         return "whitesmoke"
