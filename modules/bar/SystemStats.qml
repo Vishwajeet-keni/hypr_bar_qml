@@ -18,13 +18,13 @@ Item {
             spacing: 5
             Text {
                 text: Icons.system_stats.cpu
-                color: Colors.stateColor(SystemStatsService.cpuState)
+                color: Colors.systemStateColor(SystemStatsService.cpuState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
                 text: SystemStatsService.cpuUsage + "%"
-                color: Colors.stateColor(SystemStatsService.cpuState)
+                color: Colors.systemStateColor(SystemStatsService.cpuState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
                 font.bold: true
@@ -35,13 +35,13 @@ Item {
             spacing: 5
             Text {
                 text: Icons.system_stats.mem
-                color: Colors.stateColor(SystemStatsService.memState)
+                color: Colors.systemStateColor(SystemStatsService.memState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
                 text: SystemStatsService.memUsage + "%"
-                color: Colors.stateColor(SystemStatsService.memState)
+                color: Colors.systemStateColor(SystemStatsService.memState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
                 font.bold: true
@@ -52,13 +52,13 @@ Item {
             spacing: 5
             Text {
                 text: Icons.system_stats.temp[SystemStatsService.tempState]
-                color: Colors.stateColor(SystemStatsService.tempState)
+                color: Colors.systemStateColor(SystemStatsService.tempState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
             }
             Text {
                 text: SystemStatsService.tempLvl + "\u00b0C"
-                color: Colors.stateColor(SystemStatsService.tempState)
+                color: Colors.systemStateColor(SystemStatsService.tempState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase
                 font.bold: true

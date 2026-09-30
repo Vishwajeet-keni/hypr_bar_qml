@@ -27,15 +27,18 @@ RowLayout {
         return Icons.battery_icons.lvl[0]
     }
     readonly property string icon: {
-        if (charging) return Icons.battery.charging + battery_lvl
-        if (profile != PowerProfile.Balanced) return Icons.battery[PowerProfile.toString(profile)] + battery_lvl
+        if (charging) return Icons.battery.Charging + battery_lvl
+        if (profile != PowerProfile.Balanced) {
+            return Icons.battery[PowerProfile.toString(profile)] + battery_lvl
+        }
         return battery_lvl
     }
-    readonly property color stateColor: {
-        if (critical) return "#D9534F"                                  // muted brick red
-        if (charging) return "#7FB069"                                  // soft sage green
-        if (profile == PowerProfile.PowerSaver) return "#C4A855"        // muted gold
-        if (profile == PowerProfile.Performance) return "#C47848"       // muted terracotta
+    readonly property color profileColor: {
+        if (critical) return Colors.battryProfileColor.Critical                 // muted brick red
+        if (charging) return Colors.battryProfileColor.Charging                 // soft sage green
+        if (profile != PowerProfile.Balance) {
+            return Colors.battryProfileColor[PowerProfile.toString(profile)]    //  muted gold | muted terracotta
+        }
         return "whitesmoke"
     }
 
@@ -50,13 +53,13 @@ RowLayout {
 
     Text {
         text: root.icon
-        color: root.stateColor
+        color: root.profileColor
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
     }
     Text {
         text: root.level + "%"
-        color: root.stateColor
+        color: root.profileColor
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
         font.bold: true
