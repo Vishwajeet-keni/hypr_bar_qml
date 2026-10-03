@@ -14,7 +14,9 @@ QtObject {
     // readonly property color barBorder: "whitesmoke"
     readonly property color barBorder: Qt.rgba(0, 0, 0, 0)      // Alternative Look
 
-
+    // Glass look
+    readonly property color glassBg: Qt.rgba(1, 1, 1, 0.08)
+    readonly property color glassBorder: Qt.rgba(1, 1, 1, 0.18)
 
     // ── Catppuccin Mocha palette ──
     readonly property color accentMauve: "#cba6f7"
