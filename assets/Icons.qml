@@ -4,18 +4,21 @@ import QtQuick
 QtObject{
     // Battery Icons
     readonly property var battery: {
-        "lvl":{0:"\uf244", 1:"\uf243", 2:"\uf242", 3:"\uf241", 4:"\uf240"}, 
-        "Charging":"\uf0e7", "PowerSaver":"\uf06c", "Performance":"\uf0e4"
+        "lvl":{0:"\u{f244}", 1:"\u{f243}", 2:"\u{f242}", 3:"\u{f241}", 4:"\u{f240}"}, 
+        "Charging":"\u{f0e7}", "PowerSaver":"\u{f06c}", "Performance":"\u{f0e4}"
     }
 
     // System Stats Icons
-    readonly property var system_stats: {"cpu":"\uf4bc", "mem":"\uf0a0", 
-                                         "temp":{"temp-cool"  :"\uf2cb",
-                                                 "temp-normal":"\uf2ca",
-                                                 "temp-warm"  :"\uf2c9",
-                                                 "temp-hot"   :"\uf2c8",
-                                                 "temp-crit"  :"\uf2c7"}}
+    readonly property var system_stats: {"cpu":"\u{f4bc}", "mem":"\u{f0a0}", 
+                                         "temp":{"temp-cool"  :"\u{f2cb}",
+                                                 "temp-normal":"\u{f2ca}",
+                                                 "temp-warm"  :"\u{f2c9}",
+                                                 "temp-hot"   :"\u{f2c8}",
+                                                 "temp-crit"  :"\u{f2c7}"}}
                                 
     // Updates
-    readonly property string updates: "\uf021"
+    readonly property string updates: "\u{f021}"
+
+    // Menu
+    readonly property string menu: "\u{F07E1}"
 }

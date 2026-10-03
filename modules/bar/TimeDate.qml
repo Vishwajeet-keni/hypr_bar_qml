@@ -4,7 +4,7 @@ import "../../config"
 
 Item {
     id: root
-    implicitWidth: label.implicitWidth
+    implicitWidth:  label.implicitWidth
     implicitHeight: label.implicitHeight
 
     Text {

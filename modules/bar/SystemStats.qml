@@ -6,7 +6,7 @@ import "../../services"
 
 Item {
     id: root
-    implicitWidth: row.implicitWidth
+    implicitWidth:  row.implicitWidth
     implicitHeight: row.implicitHeight
 
     RowLayout {
@@ -69,7 +69,7 @@ Item {
     MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
+        // cursorShape: Qt.PointingHandCursor
         onClicked: AppState.systemGraphOpen = !AppState.systemGraphOpen
     }
 }

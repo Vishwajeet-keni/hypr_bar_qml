@@ -7,7 +7,7 @@ import "../../config"
 
 Item {
     id: root
-    implicitWidth: row.implicitWidth
+    implicitWidth:  row.implicitWidth
     implicitHeight: row.implicitHeight
 
     property int pacmanCount: 0

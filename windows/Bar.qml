@@ -66,6 +66,7 @@ PanelWindow {
                 SystemStats {}
                 Updates {}
                 Battery {}
+                Menu {}
                 TimeDate {}
             }
 
