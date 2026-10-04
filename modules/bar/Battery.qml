@@ -26,7 +26,7 @@ RowLayout {
         if (level >= 10) return Icons.battery.lvl[1]
         return Icons.battery.lvl[0]
     }
-    
+
     readonly property string icon: {
         if (charging) return Icons.battery.Charging + battery_lvl
         if (profile != PowerProfile.Balanced) {
@@ -46,13 +46,13 @@ RowLayout {
 
     Text {
         text: root.icon
-        color: Colors.batteryColor(critical, charging, profile)
+        color: Colors.batteryColor(critical, charging, PowerProfile.toString(profile))
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
     }
     Text {
         text: root.level + "%"
-        color: Colors.batteryColor(critical, charging, profile)
+        color: Colors.batteryColor(critical, charging, PowerProfile.toString(profile))
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
         font.bold: true
