@@ -26,13 +26,17 @@ QtObject {
     readonly property color bgDark: "#11111b"
 
     // Battery Colour theme
-    readonly property var battryProfileColor: {
-        "Critical":     "#D9534F",          // muted brick red
-        "Charging":     "#7FB069",          // soft sage green
-        "PowerSaver":   "#C4A855",          // muted gold
-        "Performance":  "#C47848"           // muted terracotta
-    }
+    function batteryColor(critical, charging, powerProfile) {
+        if (critical) return "#D9534F"        // muted brick red - overrides everything else
+        if (charging) return "#7FB069"        // soft sage green
 
+        switch (powerProfile) {
+        case "PowerSaver":  return "#C4A855"  // muted gold
+        case "Performance": return "#C47848"  // muted terracotta
+        default:            return Colors.textPrimary
+        }
+    }
+    
     function systemStateColor(state) {
         switch (state) {
             

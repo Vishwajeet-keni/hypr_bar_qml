@@ -51,7 +51,7 @@ Item {
         RowLayout {
             spacing: 5
             Text {
-                text: Icons.system_stats.temp[SystemStatsService.tempState]
+                text: Icons.tempIcon(SystemStatsService.tempState)   
                 color: Colors.systemStateColor(SystemStatsService.tempState)
                 font.family: "JetBrains Mono Nerd Font"
                 font.pixelSize: Vars.fontBase

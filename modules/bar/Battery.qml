@@ -24,22 +24,15 @@ RowLayout {
         if (level >= 60) return Icons.battery.lvl[3]
         if (level >= 40) return Icons.battery.lvl[2]
         if (level >= 10) return Icons.battery.lvl[1]
-        return Icons.battery_icons.lvl[0]
+        return Icons.battery.lvl[0]
     }
+    
     readonly property string icon: {
         if (charging) return Icons.battery.Charging + battery_lvl
         if (profile != PowerProfile.Balanced) {
             return Icons.battery[PowerProfile.toString(profile)] + battery_lvl
         }
         return battery_lvl
-    }
-    readonly property color profileColor: {
-        if (critical) return Colors.battryProfileColor.Critical                 // muted brick red
-        if (charging) return Colors.battryProfileColor.Charging                 // soft sage green
-        if (profile != PowerProfile.Balanced) {
-            return Colors.battryProfileColor[PowerProfile.toString(profile)]    //  muted gold | muted terracotta
-        }
-        return "whitesmoke"
     }
 
     onShouldWarnChanged: {
@@ -53,13 +46,13 @@ RowLayout {
 
     Text {
         text: root.icon
-        color: root.profileColor
+        color: Colors.batteryColor(critical, charging, profile)
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
     }
     Text {
         text: root.level + "%"
-        color: root.profileColor
+        color: Colors.batteryColor(critical, charging, profile)
         font.family: "JetBrains Mono Nerd Font"
         font.pixelSize: Vars.fontBase
         font.bold: true
