@@ -52,7 +52,8 @@ PanelWindow {
                 anchors.centerIn: parent
                 spacing: 10
 
-                Text { text: "Center"; color: "cyan"; font.pixelSize: 14 }
+                // Text { text: "Center"; color: "cyan"; font.pixelSize: 14 }
+                TimeDate {}
             }
 
             RowLayout {             // right sub-container
@@ -67,7 +68,7 @@ PanelWindow {
                 Updates {}
                 Battery {}
                 Menu {}
-                TimeDate {}
+                // TimeDate {}
             }
 
 

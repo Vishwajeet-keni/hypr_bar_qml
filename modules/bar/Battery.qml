@@ -14,7 +14,7 @@ RowLayout {
     readonly property bool ready: battery.ready && battery.isPresent
     readonly property int level: Math.round(battery.percentage * 100)
     readonly property bool charging: battery.state === UPowerDeviceState.Charging || battery.state === UPowerDeviceState.PendingCharge
-    readonly property bool critical: ready && level <= 30
+    readonly property bool critical: ready && level <= Vars.battery_low
     readonly property bool shouldWarn: critical && battery.state === UPowerDeviceState.Discharging
 
     visible: root.ready // no battery on this machine -> widget just isn't shown
