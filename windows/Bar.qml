@@ -1,7 +1,8 @@
-import Quickshell
-import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
+
+import Quickshell
+import Quickshell.Wayland
 
 import "../config"
 import "../modules/bar"
@@ -67,7 +68,7 @@ PanelWindow {
                 SystemStats {}
                 Updates {}
                 Battery {}
-                Menu {}
+                Menu_btn {}
                 // TimeDate {}
             }
 
