@@ -15,12 +15,7 @@ PanelWindow {
     WlrLayershell.namespace: "hyprbar"
     exclusiveZone: Vars.barHeight
 
-    anchors {
-        top: true
-        left: true
-        right: true
-    }
-
+    anchors { top: true; left: true; right: true }
     margins { top: 3; left: 8; right: 8 }
     implicitHeight: Vars.barHeight
     color: "transparent"

@@ -8,4 +8,5 @@ Scope {
 
     Bar {}
     LowBattWarning {}
+    CalendarPopup {}
 }

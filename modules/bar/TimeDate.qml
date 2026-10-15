@@ -5,7 +5,7 @@ import "../../config"
 
 Item {
     id: root
-    implicitWidth:  label.implicitWidth
+    implicitWidth: label.implicitWidth
     implicitHeight: label.implicitHeight
 
     Text {
@@ -25,18 +25,19 @@ Item {
         onTriggered: label.text = Qt.formatDateTime(new Date(), "ddd dd-MMM hh:mm")
     }
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        cursorShape: Qt.PointingHandCursor
-        onClicked: AppState.calendarOpen = true
-        onExited: closeTimer.restart()
-        onEntered: closeTimer.stop()
+    HoverHandler {
+        onHoveredChanged: {
+            if (hovered) {
+                AppState.cancelCalendarClose()
+            } else {
+                AppState.scheduleCalendarClose()
+            }
+        }
     }
 
-    Timer {
-        id: closeTimer
-        interval: 300
-        onTriggered: AppState.calendarOpen = false
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: AppState.toggleCalendar()
     }
 }
