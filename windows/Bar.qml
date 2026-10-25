@@ -16,7 +16,7 @@ PanelWindow {
     exclusiveZone: Vars.barHeight
 
     anchors { top: true; left: true; right: true }
-    margins { top: 3; left: 8; right: 8 }
+    margins { top: Vars.barTopMargin; left: Vars.barSideMargin; right: Vars.barSideMargin }
     implicitHeight: Vars.barHeight
     color: "transparent"
 

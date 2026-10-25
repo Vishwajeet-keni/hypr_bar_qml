@@ -6,7 +6,7 @@ import "windows"
 Scope {
     id: root
 
-    Bar {}
+    Bar { id: bar }
     LowBattWarning {}
-    CalendarPopup {}
+    CalendarPopup { anchorWindow: bar }
 }

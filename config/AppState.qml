@@ -7,6 +7,10 @@ QtObject {
     property bool menuOpen: false
     property bool calendarOpen: false
 
+    // Bar-relative position of the TimeDate trigger for popup anchoring
+    property real calendarAnchorX: 0
+    property real calendarAnchorWidth: 0
+
     function openCalendar() {
         calendarCloseTimer.stop()
         calendarOpen = true

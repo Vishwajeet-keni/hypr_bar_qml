@@ -8,6 +8,22 @@ Item {
     implicitWidth: label.implicitWidth
     implicitHeight: label.implicitHeight
 
+    function updateAnchor() {
+        const p = root.mapToItem(null, 0, 0)
+        AppState.calendarAnchorX = p.x
+        AppState.calendarAnchorWidth = root.width
+    }
+    onXChanged: updateAnchor()
+    onWidthChanged: updateAnchor()
+    Component.onCompleted: Qt.callLater(updateAnchor)
+
+    // React when the parent container itself moves (e.g. RowLayout centered by anchors.centerIn)
+    Connections {
+        target: root.parent
+        function onXChanged() { root.updateAnchor() }
+        function onWidthChanged() { root.updateAnchor() }
+    }
+
     Text {
         id: label
         anchors.fill: parent

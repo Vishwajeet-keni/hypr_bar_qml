@@ -5,6 +5,8 @@ QtObject {
     // ── Single source of truth ──
     readonly property int barHeight: 26
     readonly property int battery_low: 20
+    readonly property int barTopMargin: 3
+    readonly property int barSideMargin: 8
 
     // Derived sizes — mirrors variables.scss's own comment: don't edit
     // these directly, edit barHeight and these follow.

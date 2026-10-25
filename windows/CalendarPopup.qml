@@ -1,22 +1,17 @@
 import QtQuick
 import Quickshell
-import Quickshell.Wayland
 
 import "../config"
 
-PanelWindow {
+PopupWindow {
     id: calendarWin
 
-    WlrLayershell.layer: WlrLayer.Overlay
-    // WlrLayershell.namespace: "eww-control-panel"
-    exclusiveZone: 0
+    property var anchorWindow
 
-    anchors {
-        top: true
-    }
-    margins {
-        // top: -Vars.barHeight
-    }
+    anchor.window: anchorWindow
+    anchor.rect.x: Math.round(AppState.calendarAnchorX + AppState.calendarAnchorWidth / 2 - implicitWidth / 2)
+    anchor.rect.y: anchorWindow ? anchorWindow.height : 0
+    anchor.adjustment: PopupAdjustment.SlideX
 
     // Fixed geometry prevents Wayland surface resizing/shaking when switching months
     readonly property int cardWidth: 266
